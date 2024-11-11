@@ -19,4 +19,6 @@ public class AuthenticationResDTO {
     String firstName;
     String lastName;
     String profilePic;
+    String message;
+    String responseCode;
 }

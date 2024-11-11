@@ -80,7 +80,12 @@ public class UserService {
         boolean isUserPresent = userRepository.findByUsername(userDTO.getUsername()).isPresent();
 
         if (isUserPresent) {
-            throw new UserAlreadyExistsException("User already exists with username: " + userDTO.getUsername());
+
+            return AuthenticationResDTO.builder()
+                    .message("User already exists with username: " + userDTO.getUsername())
+                    .responseCode("409")
+                    .build();
+
         } else {
             User user = User.builder()
                     .firstName(userDTO.getFirstName())
