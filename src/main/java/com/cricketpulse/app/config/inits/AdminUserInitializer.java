@@ -1,6 +1,7 @@
 package com.cricketpulse.app.config.inits;
 import com.cricketpulse.app.dto.UserDTO;
 import com.cricketpulse.app.enums.ROLE;
+import com.cricketpulse.app.exception.UserAlreadyExistsException;
 import com.cricketpulse.app.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -37,6 +38,11 @@ public class AdminUserInitializer implements CommandLineRunner {
                 null  // profilePic
         );
 
-        userService.createAdmin(adminUser);
+        try {
+            userService.createAdmin(adminUser);
+        } catch (UserAlreadyExistsException e) {
+            // Log the exception and continue
+            System.err.println("Admin user already exists: " + e.getMessage());
+        }
     }
 }
