@@ -16,11 +16,13 @@ import com.cricketpulse.app.entity.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,12 +82,7 @@ public class UserService {
         boolean isUserPresent = userRepository.findByUsername(userDTO.getUsername()).isPresent();
 
         if (isUserPresent) {
-
-            return AuthenticationResDTO.builder()
-                    .message("User already exists with username: " + userDTO.getUsername())
-                    .responseCode("409")
-                    .build();
-
+            throw new UserAlreadyExistsException("User Already Exists in the system");
         } else {
             User user = User.builder()
                     .firstName(userDTO.getFirstName())
@@ -157,6 +154,8 @@ public class UserService {
                 .lastName(user.getLastName())
                 .role(user.getRole().toString())
                 .profilePic(user.getProfilePic())
+                .message("")
+                .responseCode(HttpStatus.OK)
                 .build();
     }
 

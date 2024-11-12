@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 /**
  * @author : Kanchana Kalansooriya
@@ -20,5 +21,5 @@ public class AuthenticationResDTO {
     String lastName;
     String profilePic;
     String message;
-    String responseCode;
+    HttpStatus responseCode;
 }
