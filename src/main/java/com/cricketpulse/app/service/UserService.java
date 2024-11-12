@@ -173,4 +173,30 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("Sorry, no user found with the Id :" + id));
     }
+
+    @Transactional
+    public AuthenticationResDTO createAdmin(UserDTO userDTO) {
+        boolean isUserPresent = userRepository.findByUsername(userDTO.getUsername()).isPresent();
+
+        if (isUserPresent) {
+            throw new UserAlreadyExistsException("User Already Exists in the system");
+        } else {
+            User user = User.builder()
+                    .firstName(userDTO.getFirstName())
+                    .lastName(userDTO.getLastName())
+                    .username(userDTO.getUsername())
+                    .password(passwordEncoder.encode(userDTO.getPassword()))
+                    .role(ROLE.ADMIN) // Set the role to ADMIN
+                    .profilePic(userDTO.getProfilePic())
+                    .build();
+
+            userRepository.save(user);
+        }
+        return AuthenticationResDTO.builder()
+                .username(userDTO.getUsername())
+                .firstName(userDTO.getFirstName())
+                .lastName(userDTO.getLastName())
+                .role(ROLE.ADMIN.toString())
+                .build();
+    }
 }
