@@ -2,7 +2,6 @@ package com.cricketpulse.app.controller;
 
 import com.cricketpulse.app.dto.CoachBookingDTO;
 import com.cricketpulse.app.entity.CoachBooking;
-import com.cricketpulse.app.entity.TimeSlot;
 import com.cricketpulse.app.service.CoachBookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -49,9 +48,4 @@ public class CoachBookingController {
     }
 
 
-    @GetMapping("/booked-time-slots")
-    public List<TimeSlot> getBookedTimeSlotsByCoachAndDate(@RequestParam Long coachId, @RequestParam String date) {
-        LocalDate localDate = LocalDate.parse(date);
-        return coachBookingService.getBookedTimeSlotsByCoachAndDate(coachId, localDate);
-    }
 }

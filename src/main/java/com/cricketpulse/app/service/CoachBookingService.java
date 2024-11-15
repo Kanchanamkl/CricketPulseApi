@@ -1,23 +1,19 @@
 package com.cricketpulse.app.service;
 
 import com.cricketpulse.app.dto.CoachBookingDTO;
-import com.cricketpulse.app.dto.TimeSlotDTO;
 import com.cricketpulse.app.entity.Coach;
 import com.cricketpulse.app.entity.CoachBooking;
 import com.cricketpulse.app.entity.Member;
-import com.cricketpulse.app.entity.TimeSlot;
 import com.cricketpulse.app.repository.CoachBookingRepository;
 import com.cricketpulse.app.exception.CoachBookingNotFoundException;
 import com.cricketpulse.app.repository.CoachRepository;
 import com.cricketpulse.app.repository.MemberRepository;
-import com.cricketpulse.app.repository.TimeSlotRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +22,6 @@ public class CoachBookingService {
     private final CoachBookingRepository coachBookingRepository;
     private final CoachRepository coachRepository;
     private final MemberRepository memberRepository;
-    private final TimeSlotRepository timeSlotRepository;
 
 
     @Transactional
@@ -41,23 +36,13 @@ public class CoachBookingService {
                 .coach(coach)
                 .member(member)
                 .date(coachBookingDTO.getDate())
-                .slotCount(coachBookingDTO.getSlotCount())
+                .startTime(coachBookingDTO.getStartTime())
+                .endTime(coachBookingDTO.getEndTime())
+                .description(coachBookingDTO.getDescription())
                 .build();
 
         // Save the CoachBooking entity first
         coachBooking = coachBookingRepository.save(coachBooking);
-
-        // Save the associated TimeSlot entities
-        for (TimeSlot ts : coachBookingDTO.getTimeSlots()) {
-            TimeSlot timeSlot = TimeSlot.builder()
-                    .coachBooking(coachBooking)
-                    .startTime(ts.getStartTime())
-                    .endTime(ts.getEndTime())
-                    .description(ts.getDescription())
-                    .build();
-            timeSlotRepository.save(timeSlot);
-        }
-
         return coachBooking;
     }
 
@@ -84,7 +69,9 @@ public class CoachBookingService {
         existingCoachBooking.setCoach(coach);
         existingCoachBooking.setMember(member);
         existingCoachBooking.setDate(coachBookingDTO.getDate());
-        existingCoachBooking.setSlotCount(coachBookingDTO.getSlotCount());
+        existingCoachBooking.setStartTime(coachBookingDTO.getStartTime());
+        existingCoachBooking.setEndTime(coachBookingDTO.getEndTime());
+        existingCoachBooking.setDescription(coachBookingDTO.getDescription());
 //        existingCoachBooking.setTimeSlots(coachBookingDTO.getTimeSlots());
 
         return coachBookingRepository.save(existingCoachBooking);
@@ -98,9 +85,5 @@ public class CoachBookingService {
         coachBookingRepository.deleteById(id);
     }
 
-
-    public List<TimeSlot> getBookedTimeSlotsByCoachAndDate(Long coachId, LocalDate date) {
-        return timeSlotRepository.findByCoachBooking_Coach_IdAndCoachBooking_Date(coachId, date);
-    }
 
 }

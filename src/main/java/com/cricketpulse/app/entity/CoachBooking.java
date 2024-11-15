@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -33,7 +34,12 @@ public class CoachBooking {
 
     private LocalDate date;
 
-    private int slotCount;
+    private LocalTime startTime;
+
+    private LocalTime endTime;
+
+    private String description;
+//    private int slotCount;
 
 //    @OneToMany(mappedBy = "coachBooking", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<TimeSlot> timeSlots;
