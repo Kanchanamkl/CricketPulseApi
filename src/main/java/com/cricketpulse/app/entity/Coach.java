@@ -29,5 +29,6 @@ public class Coach {
     private String gender;
     private LocalDate dob;
     private String profilePic;
+    private String specialize;
 }
 

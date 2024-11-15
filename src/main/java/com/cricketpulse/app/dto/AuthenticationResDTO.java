@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthenticationResDTO {
+    String Id;
     String username;
     String role;
     String firstName;

@@ -35,7 +35,8 @@ public class AdminUserInitializer implements CommandLineRunner {
                 null, // gender
                 null, // nic
                 null, // dob
-                null  // profilePic
+                null,// specialize
+                null// profilePic
         );
 
         try {

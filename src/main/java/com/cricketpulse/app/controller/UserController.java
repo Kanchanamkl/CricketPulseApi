@@ -4,6 +4,7 @@ package com.cricketpulse.app.controller;
 import com.cricketpulse.app.dto.AuthenticationReqDTO;
 import com.cricketpulse.app.dto.AuthenticationResDTO;
 import com.cricketpulse.app.dto.UserDTO;
+import com.cricketpulse.app.entity.Coach;
 import com.cricketpulse.app.entity.User;
 import com.cricketpulse.app.enums.ROLE;
 import com.cricketpulse.app.service.UserService;
@@ -65,4 +66,8 @@ public class UserController {
     }
 
 
+    @GetMapping("/get-all-coaches")
+    public List<Coach> getAllCoaches() {
+        return userService.getAllCoaches();
+    }
 }

@@ -105,6 +105,7 @@ public class UserService {
                         .gender(userDTO.getGender())
                         .dob(userDTO.getDob())
                         .profilePic(userDTO.getProfilePic())
+                        .specialize(userDTO.getSpecialize())
                         .build();
                 coachRepository.save(coach);
             } else if (userDTO.getRole().equals(ROLE.MEMBER)) {
@@ -149,6 +150,7 @@ public class UserService {
         );
         var user = userRepository.findByUsername(request.getEmail()).orElseThrow();
         return AuthenticationResDTO.builder()
+                .Id(user.getUserId().toString())
                 .username(user.getUsername())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
@@ -198,5 +200,9 @@ public class UserService {
                 .lastName(userDTO.getLastName())
                 .role(ROLE.ADMIN.toString())
                 .build();
+    }
+
+    public List<Coach> getAllCoaches() {
+        return coachRepository.findAll();
     }
 }
