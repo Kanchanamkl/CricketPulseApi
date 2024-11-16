@@ -41,7 +41,6 @@ public class CoachBookingService {
                 .description(coachBookingDTO.getDescription())
                 .build();
 
-        // Save the CoachBooking entity first
         coachBooking = coachBookingRepository.save(coachBooking);
         return coachBooking;
     }
