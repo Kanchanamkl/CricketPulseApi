@@ -2,14 +2,18 @@ package com.cricketpulse.app.controller;
 
 import com.cricketpulse.app.dto.CoachBookingDTO;
 import com.cricketpulse.app.entity.CoachBooking;
+import com.cricketpulse.app.entity.Member;
 import com.cricketpulse.app.entity.User;
+import com.cricketpulse.app.repository.MemberRepository;
 import com.cricketpulse.app.service.CoachBookingService;
+import com.cricketpulse.app.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/coach-bookings")
@@ -17,6 +21,8 @@ import java.util.List;
 public class CoachBookingController {
 
     private final CoachBookingService coachBookingService;
+    private final UserService userService;
+    private final MemberRepository memberRepository;
 
     @PostMapping("/create")
     public ResponseEntity<CoachBooking> createCoachBooking(@RequestBody CoachBookingDTO coachBookingDTO) {
@@ -35,9 +41,11 @@ public class CoachBookingController {
         return  coachBookingService.getAllCoachBookings();
     }
 
-    @GetMapping("/get_coach_bookings_by_member/{memberId}")
-    public List<CoachBooking> getCoachBookingsByMemberId(@PathVariable Long memberId) {
-        List<CoachBooking> coachBookings = coachBookingService.getCoachBookingsByMemberId(memberId);
+    @GetMapping("/get_coach_bookings_by_member/{userId}")
+    public List<CoachBooking> getCoachBookingsByMemberId(@PathVariable Long userId) {
+        Optional<Member> member = memberRepository.findByUser(userService.getUserById(userId));
+        System.out.println("Member: " + member.get().getId());
+        List<CoachBooking> coachBookings = coachBookingService.getCoachBookingsByMemberId(member.get().getId());
         return coachBookings;
     }
 
