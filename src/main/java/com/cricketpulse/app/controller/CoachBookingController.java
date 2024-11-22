@@ -2,6 +2,7 @@ package com.cricketpulse.app.controller;
 
 import com.cricketpulse.app.dto.CoachBookingDTO;
 import com.cricketpulse.app.entity.CoachBooking;
+import com.cricketpulse.app.entity.User;
 import com.cricketpulse.app.service.CoachBookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +30,10 @@ public class CoachBookingController {
         return ResponseEntity.ok(coachBooking);
     }
 
-    @GetMapping
-    public ResponseEntity<List<CoachBooking>> getAllCoachBookings() {
-        List<CoachBooking> coachBookings = coachBookingService.getAllCoachBookings();
-        return ResponseEntity.ok(coachBookings);
+    @GetMapping("/get_all_coach_bookings")
+    public List<CoachBooking> getAllCoachBookings() {
+        return  coachBookingService.getAllCoachBookings();
+
     }
 
     @PutMapping("/{id}")
