@@ -33,8 +33,14 @@ public class CoachBookingController {
     @GetMapping("/get_all_coach_bookings")
     public List<CoachBooking> getAllCoachBookings() {
         return  coachBookingService.getAllCoachBookings();
-
     }
+
+    @GetMapping("/get_coach_bookings_by_member/{memberId}")
+    public List<CoachBooking> getCoachBookingsByMemberId(@PathVariable Long memberId) {
+        List<CoachBooking> coachBookings = coachBookingService.getCoachBookingsByMemberId(memberId);
+        return coachBookings;
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<CoachBooking> updateCoachBooking(@PathVariable Long id, @RequestBody CoachBookingDTO coachBookingDTO) {

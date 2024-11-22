@@ -50,6 +50,10 @@ public class CoachBookingService {
                 .orElseThrow(() -> new CoachBookingNotFoundException("Coach booking not found with id: " + id));
     }
 
+    public List<CoachBooking> getCoachBookingsByMemberId(Long memberId) {
+        return coachBookingRepository.findAllByMemberId(memberId);
+    }
+
     public List<CoachBooking> getAllCoachBookings() {
         return coachBookingRepository.findAll();
     }
