@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class CoachBookingService {
     private final CoachBookingRepository coachBookingRepository;
     private final CoachRepository coachRepository;
     private final MemberRepository memberRepository;
+    private final UserService userService;
 
 
     @Transactional
@@ -29,8 +31,10 @@ public class CoachBookingService {
         Coach coach = coachRepository.findById(coachBookingDTO.getCoachId())
                 .orElseThrow(() -> new CoachBookingNotFoundException("Coach not found with id: " + coachBookingDTO.getCoachId()));
 
-        Member member = memberRepository.findById(coachBookingDTO.getMemberId())
+        Member member = memberRepository.findByUser(userService.getUserById(coachBookingDTO.getMemberId()))
                 .orElseThrow(() -> new CoachBookingNotFoundException("Member not found with id: " + coachBookingDTO.getMemberId()));
+
+
 
         CoachBooking coachBooking = CoachBooking.builder()
                 .coach(coach)
