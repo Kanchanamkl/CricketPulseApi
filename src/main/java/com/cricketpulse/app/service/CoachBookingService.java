@@ -58,6 +58,10 @@ public class CoachBookingService {
         return coachBookingRepository.findAllByMemberId(memberId);
     }
 
+    public List<CoachBooking> getCoachBookingsByCoachId(Long coachId) {
+        return coachBookingRepository.findAllByCoachId(coachId);
+    }
+
     public List<CoachBooking> getAllCoachBookings() {
         return coachBookingRepository.findAll();
     }

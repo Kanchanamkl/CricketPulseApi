@@ -13,4 +13,6 @@ import java.util.Optional;
 public interface CoachBookingRepository extends JpaRepository<CoachBooking, Long> {
 
     List<CoachBooking> findAllByMemberId(Long memberId);
+    List<CoachBooking> findAllByCoachId(Long coachId);
+
 }

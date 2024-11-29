@@ -1,9 +1,11 @@
 package com.cricketpulse.app.controller;
 
 import com.cricketpulse.app.dto.CoachBookingDTO;
+import com.cricketpulse.app.entity.Coach;
 import com.cricketpulse.app.entity.CoachBooking;
 import com.cricketpulse.app.entity.Member;
 import com.cricketpulse.app.entity.User;
+import com.cricketpulse.app.repository.CoachRepository;
 import com.cricketpulse.app.repository.MemberRepository;
 import com.cricketpulse.app.service.CoachBookingService;
 import com.cricketpulse.app.service.UserService;
@@ -23,6 +25,7 @@ public class CoachBookingController {
     private final CoachBookingService coachBookingService;
     private final UserService userService;
     private final MemberRepository memberRepository;
+    private final CoachRepository coachRepository;
 
     @PostMapping("/create")
     public ResponseEntity<CoachBooking> createCoachBooking(@RequestBody CoachBookingDTO coachBookingDTO) {
@@ -47,7 +50,19 @@ public class CoachBookingController {
         System.out.println("Member: " + member.get().getId());
         List<CoachBooking> coachBookings = coachBookingService.getCoachBookingsByMemberId(member.get().getId());
         return coachBookings;
+
     }
+
+    @GetMapping("/get_coach_bookings_by_coach/{userId}")
+    public List<CoachBooking> getCoachBookingsByCoachId(@PathVariable Long userId) {
+        Optional<Coach> coach = coachRepository.findByUser(userService.getUserById(userId));
+        System.out.println("Coach: " + coach.get().getId());
+        List<CoachBooking> coachBookings = coachBookingService.getCoachBookingsByCoachId(coach.get().getId());
+        return coachBookings;
+
+    }
+
+
 
 
     @PutMapping("/{id}")
