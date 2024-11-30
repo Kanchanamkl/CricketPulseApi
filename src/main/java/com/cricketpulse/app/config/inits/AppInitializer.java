@@ -48,7 +48,7 @@ public class AppInitializer implements CommandLineRunner {
                 null, // nic
                 null, // dob
                 null,// specialize
-                null// profilePic
+                "https://firebasestorage.googleapis.com/v0/b/restarantappfilerepo.appspot.com/o/profilePics%2Fadmin%2Fadminuser.png?alt=media&token=9bb9ee2d-f870-4aea-8dd1-3ad83b6d21c8"// profilePic
         );
 
         try {

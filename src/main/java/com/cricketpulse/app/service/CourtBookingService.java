@@ -1,6 +1,7 @@
 package com.cricketpulse.app.service;
 import com.cricketpulse.app.dto.CourtBookingDTO;
 import com.cricketpulse.app.entity.Coach;
+import com.cricketpulse.app.entity.CoachBooking;
 import com.cricketpulse.app.entity.Court;
 import com.cricketpulse.app.entity.CourtBooking;
 import com.cricketpulse.app.exception.CoachBookingNotFoundException;
@@ -59,6 +60,11 @@ public class CourtBookingService {
 
     public List<Court> getAllCourts(){
        return courtRepository.findAll();
+    }
+
+    public List<CourtBooking> getCourtBookingsByMemberId(Long memberId) {
+        System.out.println("Member: " + memberId);
+        return courtBookingRepository.findAllByMemberId(memberId);
     }
 
 }
