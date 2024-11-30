@@ -35,7 +35,7 @@ public class CourtBookingController {
         return ResponseEntity.ok(courtBooking);
     }
 
-    @GetMapping
+    @GetMapping("/get_all_court_bookings")
     public ResponseEntity<List<CourtBooking>> getAllCourtBookings() {
         List<CourtBooking> courtBookings = courtBookingService.getAllCourtBookings();
         return ResponseEntity.ok(courtBookings);
