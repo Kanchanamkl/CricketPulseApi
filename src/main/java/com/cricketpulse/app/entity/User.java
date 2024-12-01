@@ -30,6 +30,7 @@ public class User implements UserDetails {
     private String lastName;
     private String username;
     private String password;
+    private String phoneNumber;
     private String profilePic;
     @Enumerated(EnumType.STRING)
     private ROLE role;

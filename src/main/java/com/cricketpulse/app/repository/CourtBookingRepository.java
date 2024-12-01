@@ -13,4 +13,5 @@ import java.util.List;
 @Repository
 public interface CourtBookingRepository extends JpaRepository<CourtBooking, Long> {
     List<CourtBooking> findAllByMemberId(Long memberId);
+    void deleteByMemberId(Long memberId);
 }

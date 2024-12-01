@@ -14,5 +14,6 @@ public interface CoachBookingRepository extends JpaRepository<CoachBooking, Long
 
     List<CoachBooking> findAllByMemberId(Long memberId);
     List<CoachBooking> findAllByCoachId(Long coachId);
-
+    void deleteByCoachId(Long coachId);
+    void deleteByMemberId(Long memberId);
 }

@@ -9,9 +9,7 @@ import com.cricketpulse.app.entity.Member;
 import com.cricketpulse.app.enums.ROLE;
 import com.cricketpulse.app.exception.UserAlreadyExistsException;
 import com.cricketpulse.app.exception.UserNotFoundException;
-import com.cricketpulse.app.repository.CoachRepository;
-import com.cricketpulse.app.repository.MemberRepository;
-import com.cricketpulse.app.repository.UserRepository;
+import com.cricketpulse.app.repository.*;
 import com.cricketpulse.app.entity.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +38,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     private final AuthenticationManager authenticationManager;
+    private final CoachBookingRepository coachBookingRepository;
+    private final CourtBookingRepository courtBookingRepository;
 
 
     @Transactional
@@ -49,6 +49,8 @@ public class UserService {
         user.setLastName(userDTO.getLastName());
         user.setUsername(userDTO.getUsername());
         user.setProfilePic(userDTO.getProfilePic());
+        user.setPhoneNumber(userDTO.getPhoneNumber());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         User updatedUser = userRepository.save(user);
 
         if (user.getRole().equals(ROLE.COACH)) {
@@ -91,6 +93,7 @@ public class UserService {
                     .password(passwordEncoder.encode(userDTO.getPassword()))
                     .role(userDTO.getRole())
                     .profilePic(userDTO.getProfilePic())
+                    .phoneNumber(userDTO.getPhoneNumber())
                     .build();
 
             userRepository.save(user);
@@ -133,11 +136,23 @@ public class UserService {
 
     @Transactional
     public boolean deleteUser(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new UserNotFoundException("Sorry, user not found");
-        }
-        userRepository.deleteById(id);
-        return true;
+            User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Sorry, user not found"));
+
+            if (user.getRole().equals(ROLE.COACH)) {
+                Coach coach = coachRepository.findByUser(user).orElseThrow(() -> new UserNotFoundException("Coach not found"));
+                coachBookingRepository.deleteByCoachId(coach.getId());
+                coachRepository.delete(coach);
+            } else if (user.getRole().equals(ROLE.MEMBER)) {
+                Member member = memberRepository.findByUser(user).orElseThrow(() -> new UserNotFoundException("Member not found"));
+                coachBookingRepository.deleteByMemberId(member.getId());
+                courtBookingRepository.deleteByMemberId(member.getId());
+                memberRepository.delete(member);
+
+            }
+
+
+            userRepository.delete(user);
+            return true;
     }
 
     public AuthenticationResDTO authenticateUser(AuthenticationReqDTO request) {
