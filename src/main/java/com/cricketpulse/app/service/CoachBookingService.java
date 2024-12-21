@@ -63,16 +63,17 @@ public class CoachBookingService {
         return coachBookingRepository.findAllByCoachId(coachId);
     }
 
-    public List<String> getCoachBookingSlotsByDate(LocalDate date) {
-
-    List<CoachBooking> coachBookings = coachBookingRepository.findCoachBookingsByDate(date);
-    List<String> slots = new ArrayList<>();
-    for (CoachBooking booking : coachBookings) {
-        String slot = booking.getStartTime().toString() + " - " + booking.getEndTime().toString();
-        slots.add(slot);
+    public List<String> getCoachBookingSlotsByDateAndCoachId(LocalDate date , Long CoachId) {
+        Coach coach = coachRepository.findById(CoachId)
+                .orElseThrow(() -> new CoachBookingNotFoundException("Coach not found with id: " +CoachId));
+        List<CoachBooking> coachBookings = coachBookingRepository.findCoachBookingsByDateAndCoach(date, coach);
+        List<String> slots = new ArrayList<>();
+        for (CoachBooking booking : coachBookings) {
+            String slot = booking.getStartTime().toString() + " - " + booking.getEndTime().toString();
+            slots.add(slot);
+        }
+        return slots;
     }
-    return slots;
-}
 
 
     public List<CoachBooking> getAllCoachBookings() {

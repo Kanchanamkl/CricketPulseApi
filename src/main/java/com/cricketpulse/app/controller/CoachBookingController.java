@@ -62,9 +62,9 @@ public class CoachBookingController {
 
     }
 
-    @GetMapping("/get_coach_booking_slots_by_date")
-    public List<String> getCoachBookingSlotsByDate(@RequestParam LocalDate bookingDate) {
-        List<String> coachBookingSlotsByDate = coachBookingService.getCoachBookingSlotsByDate(bookingDate);
+    @GetMapping("/get_coach_booking_slots_by_date_and_coachId")
+    public List<String> getCoachBookingSlotsByDate(@RequestParam LocalDate bookingDate, @RequestParam Long coachId) {
+        List<String> coachBookingSlotsByDate = coachBookingService.getCoachBookingSlotsByDateAndCoachId(bookingDate,coachId);
         return coachBookingSlotsByDate;
 
     }
@@ -79,8 +79,8 @@ public class CoachBookingController {
         return ResponseEntity.ok(updatedCoachBooking);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCoachBooking(@PathVariable Long id) {
+    @DeleteMapping()
+    public ResponseEntity<Void> deleteCoachBooking(@RequestParam Long id) {
         coachBookingService.deleteCoachBooking(id);
         return ResponseEntity.noContent().build();
     }

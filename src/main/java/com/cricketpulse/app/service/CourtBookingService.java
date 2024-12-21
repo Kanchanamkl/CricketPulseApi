@@ -10,6 +10,8 @@ import com.cricketpulse.app.repository.CourtRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,7 +23,7 @@ public class CourtBookingService {
 
     public CourtBooking createCourtBooking(CourtBookingDTO courtBookingDTO) {
         Court court = courtRepository.findById(courtBookingDTO.getCourtId())
-                .orElseThrow(() -> new CoachBookingNotFoundException("Coach not found with id: " + courtBookingDTO.getCourtId()));
+                .orElseThrow(() -> new CoachBookingNotFoundException("Court not found with id: " + courtBookingDTO.getCourtId()));
         CourtBooking courtBooking = CourtBooking.builder()
                 .court(court)
                 .memberId(courtBookingDTO.getMemberId())
@@ -65,6 +67,19 @@ public class CourtBookingService {
     public List<CourtBooking> getCourtBookingsByMemberId(Long memberId) {
         System.out.println("Member: " + memberId);
         return courtBookingRepository.findAllByMemberId(memberId);
+    }
+
+
+    public List<String> getCourtBookingsByDateAndCourtId(LocalDate date, Long courtId) {
+        Court court = courtRepository.findById(courtId)
+                .orElseThrow(() -> new CoachBookingNotFoundException("court not found with id: " + courtId));
+        List<CourtBooking> courtBookings = courtBookingRepository.findCourtBookingsByDateAndCourt(date,court);
+        List<String> slots = new ArrayList<>();
+        for (CourtBooking booking : courtBookings) {
+            String slot = booking.getStartTime().toString() + " - " + booking.getEndTime().toString();
+            slots.add(slot);
+        }
+        return slots;
     }
 
 }

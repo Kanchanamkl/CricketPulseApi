@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,8 +48,8 @@ public class CourtBookingController {
         return ResponseEntity.ok(updatedCourtBooking);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCourtBooking(@PathVariable Long id) {
+    @DeleteMapping()
+    public ResponseEntity<Void> deleteCourtBooking(@RequestParam Long id) {
         courtBookingService.deleteCourtBooking(id);
         return ResponseEntity.noContent().build();
     }
@@ -67,5 +68,13 @@ public class CourtBookingController {
         return courtBookings;
 
     }
+
+    @GetMapping("/get_court_booking_slots_by_date_and_courtId")
+    public List<String> getCourtBookingSlotsByDateAndCourt(@RequestParam LocalDate bookingDate, @RequestParam Long courtId) {
+        List<String> courtBookingSlotsByDate = courtBookingService.getCourtBookingsByDateAndCourtId(bookingDate, courtId);
+        return courtBookingSlotsByDate;
+
+    }
+
 
 }
