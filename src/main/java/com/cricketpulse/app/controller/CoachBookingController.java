@@ -62,6 +62,14 @@ public class CoachBookingController {
 
     }
 
+    @GetMapping("/get_coach_booking_slots_by_date")
+    public List<String> getCoachBookingSlotsByDate(@RequestParam LocalDate bookingDate) {
+        List<String> coachBookingSlotsByDate = coachBookingService.getCoachBookingSlotsByDate(bookingDate);
+        return coachBookingSlotsByDate;
+
+    }
+
+
 
 
 

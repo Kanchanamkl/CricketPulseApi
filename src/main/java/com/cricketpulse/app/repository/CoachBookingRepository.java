@@ -6,6 +6,7 @@ import com.cricketpulse.app.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,7 @@ public interface CoachBookingRepository extends JpaRepository<CoachBooking, Long
 
     List<CoachBooking> findAllByMemberId(Long memberId);
     List<CoachBooking> findAllByCoachId(Long coachId);
+    List<CoachBooking> findCoachBookingsByDate(LocalDate date);
     void deleteByCoachId(Long coachId);
     void deleteByMemberId(Long memberId);
 }

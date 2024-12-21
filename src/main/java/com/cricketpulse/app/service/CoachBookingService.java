@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,6 +62,18 @@ public class CoachBookingService {
     public List<CoachBooking> getCoachBookingsByCoachId(Long coachId) {
         return coachBookingRepository.findAllByCoachId(coachId);
     }
+
+    public List<String> getCoachBookingSlotsByDate(LocalDate date) {
+
+    List<CoachBooking> coachBookings = coachBookingRepository.findCoachBookingsByDate(date);
+    List<String> slots = new ArrayList<>();
+    for (CoachBooking booking : coachBookings) {
+        String slot = booking.getStartTime().toString() + " - " + booking.getEndTime().toString();
+        slots.add(slot);
+    }
+    return slots;
+}
+
 
     public List<CoachBooking> getAllCoachBookings() {
         return coachBookingRepository.findAll();
